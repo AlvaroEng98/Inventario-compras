@@ -1,0 +1,45 @@
+
+{% extends "base/base_create_template.html" %}
+{% load static %}
+
+        {% block element_nav %}
+
+        {% endblock element_nav %}
+
+        {% block hubicacion %}
+
+            Nuevo Elemento
+
+        {% endblock hubicacion%}
+
+        {% block formulario %}
+<form method="post">
+    {% csrf_token %}
+    <div class="card-body">
+        <div class="form-group">
+            <label for="id_nombre">Nombre Producto</label>
+            <input type="text" class="form-control" id="id_nombre" name="nombre" placeholder="Nombre Producto">
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label>Precio Compra</label>
+                    <input type="number" class="form-control" name="precio_compra" placeholder="Precio Compra ..." >
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label>Precio Venta</label>
+                    <input type="number" class="form-control" name="precio_venta" placeholder="Precio Compra ..." >
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.card-body -->
+
+    <div class="card-footer">
+        <button type="submit" class="btn btn-success">Aceptar</button>
+        <button type="button" class="btn btn-danger" onclick="location.href='{% url 'elementos_list' %}'">Cancelar</button>
+    </div>
+</form>
+        {% endblock formulario %}

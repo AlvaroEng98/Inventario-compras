@@ -1,0 +1,118 @@
+
+{% extends "base/base_template.html" %}
+{% load static %}
+
+
+          {% block element_nav %}
+            <li class="nav-item">
+            <a href="#" class="nav-link active">
+              <i class="nav-icon fas fa-copy"></i>
+              <p>
+                Compras
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+          <li class="nav-item ">
+            <a href="{% url 'create_compras' %}" class="nav-link">
+              <i class="nav-icon fas fa-plus"></i>
+              <p class="text">Insertar Compra</p>
+            </a>
+          </li>
+            </ul>
+            </li>
+          <li class="nav-item">
+            <a href="{% url 'ventas_list' %}" class="nav-link">
+              <i class="nav-icon fas fa-edit"></i>
+              <p class="text">Ventas</p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="{% url 'elementos_list' %}" class="nav-link">
+              <i class="nav-icon fas fa-edit"></i>
+              <p class="text">Productos</p>
+            </a>
+          </li>
+
+          {% endblock element_nav %}
+
+          {% block hubicacion %}
+                Compras
+          {% endblock hubicacion%}
+
+          {% block encabezado %}
+
+              Listado de Compras
+
+          {% endblock encabezado %}
+
+          {% block cabeceras_tabla %}
+              <th style="width: 1%">
+                          #
+              </th>
+              <th style="width: 20%">
+                  Fecha
+              </th>
+              <th style="width: 30%">
+                  Tipo
+              </th>
+              <th>
+                  Inversion
+              </th>
+              <th style="width: 8%" class="text-center">
+                  Ganancia
+              </th>
+              <th style="width: 20%">
+
+              </th>
+
+          {% endblock cabeceras_tabla %}
+
+
+
+          {% block valores_tabla %}
+
+              <td>
+                          #
+              </td>
+
+              <td>
+                   <a>
+                      01.01.2019
+                   </a>
+              </td>
+
+              <td>
+                  <a>
+                      01.01.2019
+                   </a>
+              </td>
+
+              <td >
+                    $$$
+              </td>
+
+              <td class="project-state">
+                  <span class="badge badge-success">$$$$</span>
+              </td>
+
+              <td class="project-actions text-right">
+                          <a class="btn btn-primary btn-sm" href="#">
+                              <i class="fas fa-folder">
+                              </i>
+                              Detalles
+                          </a>
+                          <a class="btn btn-info btn-sm" href="#">
+                              <i class="fas fa-pencil-alt">
+                              </i>
+                              Editar
+                          </a>
+                          <a class="btn btn-danger btn-sm" href="#">
+                              <i class="fas fa-trash">
+                              </i>
+                              Eliminar
+                          </a>
+              </td>
+
+          {% endblock valores_tabla %}
