@@ -79,25 +79,26 @@
 
 
           {% block valores_tabla %}
-
-              <td>
-                          #
-              </td>
+            {% for element in object_list %}
+                <tr>
+            <td>
+                {{ forloop.counter }}
+            </td>
 
               <td>
                    <a>
-                      01.01.2019
+                   {{  element.nombre }}
                    </a>
               </td>
 
               <td>
                   <a>
-                      01.01.2019
+                      {{ element.precio_compra  }}
                    </a>
               </td>
 
               <td >
-                    $$$
+                   {{ element.precio_venta }}
               </td>
 
               <td class="project-state">
@@ -105,7 +106,7 @@
               </td>
 
               <td class="project-actions text-right">
-                          <a class="btn btn-primary btn-sm" href="#">
+                          <a class="btn btn-primary btn-sm" href="{% url 'elementos_detail' element.pk %}">
                               <i class="fas fa-folder">
                               </i>
                               Detalles
@@ -115,11 +116,13 @@
                               </i>
                               Editar
                           </a>
-                          <a class="btn btn-danger btn-sm" href="#">
+                          <a class="btn btn-danger btn-sm" href="{% url 'elementos_delete' element.pk %}">
                               <i class="fas fa-trash">
                               </i>
                               Eliminar
                           </a>
               </td>
-
+                </tr>
+            {% endfor %}
+              
           {% endblock valores_tabla %}

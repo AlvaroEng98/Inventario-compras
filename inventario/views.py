@@ -47,6 +47,7 @@ def create_compras(request):
     elemetos = Element.objects.all()
     if request.method == 'POST':
 
+
         compra = Compra()
         compra.fecha_compra = request.POST['fecha_compra']
         compra.cantidad = request.POST['cantidad']
@@ -63,7 +64,8 @@ class ComprasListView(ListView):
 class ComprasDeleteView(DeleteView):
     model = Compra
     template_name = r"compras/compra_delete.html"
-    success_url = reverse_lazy("")
+    success_url = reverse_lazy("elementos_list")
+
 
 class ComprasDetailView(DetailView):
     model = Compra
@@ -80,6 +82,12 @@ class ElementDeleteView(DeleteView):
     template_name = r"elementos/elementos_delete.html"
     success_url = reverse_lazy('elementos_list')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Eliminar Elemento'
+        context['message'] = '¿Estás seguro de que deseas eliminar este elemento?'
+        return context
+
 class ElementDetailView(DetailView):
     model = Element
     template_name = r"elementos/elementos_details.html"
@@ -91,9 +99,12 @@ def create_elemet(request):
         element = Element()
         element.nombre = request.POST['nombre']
         element.precio_compra = request.POST['precio_compra']
-        element.precio_venta = request.POST['precio_venta']
+        try:
+            element.precio_venta = int(request.POST.get('precio_venta', 0))
+        except ValueError:
+            element.precio_venta = 0
         #ejecutar con un login, pero un login de verdad
         element.save()
 
-        return redirect("elementos_list", {})
+        return redirect("elementos_list")
     return render(request, 'elementos/elementos_create.html',{})

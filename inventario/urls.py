@@ -1,4 +1,6 @@
 from django.urls import path
+
+from .models import Element
 from .views import HomePageView, ElementListView, ElementDeleteView, ElementDetailView, VentasListView, \
     VentasDeleteView, VentasDetailView, ComprasListView, ComprasDeleteView, ComprasDetailView, create_elemet, \
     create_compras, create_venta
@@ -10,6 +12,7 @@ urlpatterns = [
     path("elementos", ElementListView.as_view(), name="elementos_list"),
     path("elementos/eliminar/<int:pk>", ElementDeleteView.as_view(), name="elementos_delete"),
     path("elementos/editar/<int:pk>", ElementDetailView.as_view(), name="elementos_edit"),
+    path("elementos/detalles/<int:pk>", ElementDetailView.as_view(), name="elementos_detail"),
 
     #urls relativas a las ventas
     path("ventas/insertar", create_venta, name="create_venta"),
