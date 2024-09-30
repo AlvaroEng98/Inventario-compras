@@ -72,25 +72,27 @@
 
 
           {% block valores_tabla %}
+              {% for object in object_list %}
+              <tr>
 
               <td>
-                          #
+                {{ forloop.counter }}
               </td>
 
               <td>
                    <a>
-                      01.01.2019
-                   </a>
+                       {{object.elemento}}                   </a>
               </td>
 
               <td>
                   <a>
-                      01.01.2019
+
+                    {{ object.fecha_compra }}
                    </a>
               </td>
 
               <td >
-                    $$$
+                    {{ object.cantidad }}
               </td>
 
               <td class="project-state">
@@ -114,5 +116,8 @@
                               Eliminar
                           </a>
               </td>
+
+              {% endfor %}
+              </tr>
 
           {% endblock valores_tabla %}

@@ -23,19 +23,19 @@
     <div class="card-body">
         <div class="form-group">
             <label for="id_nombre">Nombre Producto</label>
-            <input type="text" class="form-control" id="id_nombre" name="nombre" value="{{ object.nombre }}" readonly>
+            <input type="text" class="form-control" id="id_nombre" name="nombre" value="{{ elemento.nombre }}" >
         </div>
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-group">
                     <label>Precio Compra</label>
-            <input type="text" class="form-control" id="id_nombre" name="compra" value="{{ object.precio_compra }}" readonly>
+            <input type="text" class="form-control" id="id_nombre" name="compra" value="{{ elemento.precio_compra }}" >
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
                     <label>Precio Venta</label>
-                    <input type="text" class="form-control" name="precio_venta" value="{{ object.precio_venta }}" readonly >
+                    <input type="text" class="form-control" name="precio_venta" value="{{ elemento.precio_venta }}"  >
                 </div>
             </div>
         </div>
@@ -43,7 +43,8 @@
     <!-- /.card-body -->
 
     <div class="card-footer">
-        <button type="button" class="btn btn-info" onclick="location.href='{% url 'elementos_list' %}'">Volver</button>
+        <button type="submit" class="btn btn-success">Aceptar</button>
+        <button type="button" class="btn btn-danger" onclick="location.href='{% url 'elementos_list' %}'">Cancelar</button>
     </div>
 </form>
         {% endblock formulario %}

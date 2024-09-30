@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DeleteView, DetailView
 
@@ -43,19 +43,24 @@ class VentasDeleteView(DeleteView):
     success_url = reverse_lazy("")
 
 def create_compras(request):
-
     elemetos = Element.objects.all()
     if request.method == 'POST':
-
-
+        cantidad = request.POST['cantidad']
+        fecha_compra = request.POST['fecha_compra']
+        fecha_compra = datetime.strptime(fecha_compra, '%m/%d/%Y').strftime('%Y-%m-%d')
+        elemento_nombre = request.POST['elemento']
+        try:
+            elemento = Element.objects.get(nombre=elemento_nombre)
+        except Element.DoesNotExist:
+            return render(request, r'compras/compras_create.html', {'elemetos': elemetos, 'error': 'Elemento no encontrado'})
         compra = Compra()
-        compra.fecha_compra = request.POST['fecha_compra']
-        compra.cantidad = request.POST['cantidad']
-        compra.elemento = request.POST['elemento']
+        compra.fecha_compra = fecha_compra
+        compra.cantidad = cantidad
+        compra.elemento = elemento
         compra.save()
+        return redirect('compras_list')
+    return render(request, r'compras/compras_create.html', {'elemetos': elemetos})
 
-        return redirect('compras_list',{})
-    return  render(request, r'compras/compras_create.html', {'elemetos':elemetos})
 
 class ComprasListView(ListView):
     model = Compra
@@ -108,3 +113,20 @@ def create_elemet(request):
 
         return redirect("elementos_list")
     return render(request, 'elementos/elementos_create.html',{})
+
+def edit_elemento(request, pk ):
+
+    elemento = get_object_or_404(Element, pk = pk)
+
+    if request.method == 'POST':
+
+        elemento.nombre = request.POST['nombre']
+        elemento.precio_compra = request.POST['precio_compra']
+        elemento.precio_venta = request.POST['precio_venta']
+        elemento.save()
+
+        return redirect("elementos_list")
+
+    return render(request, 'elementos/elementos_create.html',{'elemento':elemento})
+
+
