@@ -7,7 +7,7 @@
 
 {% block hubicacion %}
 
-    Eliminar Compra
+    Eliminar Elemento
 
 {% endblock hubicacion%}
 
@@ -20,7 +20,7 @@
         </div>
         <div class="card-footer">
             <button type="submit" class="btn btn-danger">Eliminar</button>
-            <button type="button" class="btn btn-default" onclick="location.href='{% url 'compras_list' %}'">Cancelar</button>
+            <button type="button" class="btn btn-default" onclick="location.href='{% url 'elementos_list' %}'">Cancelar</button>
         </div>
     </form>
 {% endblock formulario %}

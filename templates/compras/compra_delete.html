@@ -1,0 +1,26 @@
+{% extends "base/base_create_template.html" %}
+{% load static %}
+
+{% block element_nav %}
+
+{% endblock element_nav %}
+
+{% block hubicacion %}
+
+    Eliminar Compra
+
+{% endblock hubicacion%}
+
+{% block formulario %}
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="card-body">
+            <p>¿Estás seguro de que deseas eliminar esta compra?</p>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+            <button type="button" class="btn btn-default" onclick="location.href='{% url 'compras_list' %}'">Cancelar</button>
+        </div>
+    </form>
+{% endblock formulario %}

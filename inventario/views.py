@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DeleteView, DetailView
-
-from inventario.models import Compra, Element, Venta
+from django.dispatch import receiver
+from inventario.models import Compra, Element, Venta, Operacion
+from django.db.models.signals import post_save
 
 
 # Create your views here.
@@ -15,18 +16,28 @@ from inventario.models import Compra, Element, Venta
 class HomePageView(TemplateView):
     template_name = "home.html"
 
+class OperacionesListView(ListView):
+    model = Operacion
+    template_name = 'home.html'
+
 def create_venta(request):
 
     elemetos = Element.objects.all()
+    ganancia = 0
     if request.method == 'POST':
 
+        cantidad = request.POST['cantidad']
+        elemento_nombre = request.POST['elemento']
+        elemento = Element.objects.get(nombre=elemento_nombre)
+
         venta = Venta()
-        venta.fecha_venta = request.POST['fecha_venta']
-        venta.cantidad =request.POST['cantidad']
-        venta.elemento = request.POST['elemento']
+        venta.cantidad = cantidad
+        venta.elemento = elemento    
+  
+        venta.ganancia += (elemento.precio_venta - elemento.precio_compra)*int(cantidad)
         venta.save()
 
-        return redirect('ventas_list', {})
+        return redirect('ventas_list')
     return render(request,r'ventas/ventas_create.html', {'elemetos': elemetos})
 
 class VentasListView(ListView):
@@ -40,27 +51,30 @@ class VentasDetailView(DetailView):
 class VentasDeleteView(DeleteView):
     model = Venta
     template_name = r"ventas/ventas_delete.html"
-    success_url = reverse_lazy("")
+    success_url = reverse_lazy("ventas_list")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Eliminar Venta'
+        context['message'] = '¿Estás seguro de que deseas eliminar esta venta?'
+        return context
+
 
 def create_compras(request):
     elemetos = Element.objects.all()
     if request.method == 'POST':
         cantidad = request.POST['cantidad']
-        fecha_compra = request.POST['fecha_compra']
-        fecha_compra = datetime.strptime(fecha_compra, '%m/%d/%Y').strftime('%Y-%m-%d')
         elemento_nombre = request.POST['elemento']
-        try:
-            elemento = Element.objects.get(nombre=elemento_nombre)
-        except Element.DoesNotExist:
-            return render(request, r'compras/compras_create.html', {'elemetos': elemetos, 'error': 'Elemento no encontrado'})
+        elemento = Element.objects.get(nombre=elemento_nombre)
+
         compra = Compra()
-        compra.fecha_compra = fecha_compra
         compra.cantidad = cantidad
         compra.elemento = elemento
+        compra.inversion = elemento.precio_compra
+    
         compra.save()
         return redirect('compras_list')
     return render(request, r'compras/compras_create.html', {'elemetos': elemetos})
-
 
 class ComprasListView(ListView):
     model = Compra
@@ -69,14 +83,17 @@ class ComprasListView(ListView):
 class ComprasDeleteView(DeleteView):
     model = Compra
     template_name = r"compras/compra_delete.html"
-    success_url = reverse_lazy("elementos_list")
+    success_url = reverse_lazy("compras_list")
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Eliminar Compra'
+        context['message'] = '¿Estás seguro de que deseas eliminar esta compra?'
+        return context
 
 class ComprasDetailView(DetailView):
     model = Compra
     template_name = r"compras/compra_details.html"
-
-#template para crear nueva compra
 
 class ElementListView(ListView):
     model = Element
@@ -130,3 +147,23 @@ def edit_elemento(request, pk ):
     return render(request, 'elementos/elementos_create.html',{'elemento':elemento})
 
 
+#signal para que cuando se cree una compra o una venta 
+#funcion para cuando se cree una venta
+@receiver(post_save, sender=Compra)
+def mi_retroalimentacion(sender, instance, created, **kwargs):
+    if created:
+
+        operacion = Operacion()
+        operacion.operacion = 'Compra'
+        operacion.cantidad = instance.inversion
+        operacion.save()
+
+#funcion para cuando se cree una compra
+@receiver(post_save, sender=Venta)
+def mi_retroalimentacion(sender, instance, created, **kwargs):
+    if created:
+
+        operacion = Operacion()
+        operacion.operacion = 'Venta'
+        operacion.cantidad = instance.ganancia
+        operacion.save()

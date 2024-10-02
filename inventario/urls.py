@@ -3,10 +3,11 @@ from django.urls import path
 from .models import Element
 from .views import HomePageView, ElementListView, ElementDeleteView, ElementDetailView, VentasListView, \
     VentasDeleteView, VentasDetailView, ComprasListView, ComprasDeleteView, ComprasDetailView, create_elemet, \
-    create_compras, create_venta, edit_elemento
+    create_compras, create_venta, edit_elemento,OperacionesListView
 
 urlpatterns = [
-    path("", HomePageView.as_view(), name="home"),
+    path("", OperacionesListView.as_view(), name="home"),
+
     #urls relativas con los elementos
     path("elementos/insertar", create_elemet, name="create_element"),
     path("elementos", ElementListView.as_view(), name="elementos_list"),
@@ -24,7 +25,7 @@ urlpatterns = [
     path("compras/insertar", create_compras, name="create_compras"),
     path("compras", ComprasListView.as_view(), name="compras_list"),
     path("compras/eliminar/<int:pk>", ComprasDeleteView.as_view(), name="compras_delete"),
-    path("compras/eliminar/<int:pk>", ComprasDetailView.as_view(), name="compras_edit"),
+    path("compras/detalles/<int:pk>", ComprasDetailView.as_view(), name="compras_detail"),
 
 
 
