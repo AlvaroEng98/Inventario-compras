@@ -13,8 +13,6 @@ from django.db.models.signals import post_save
 
 #posivilidad de analizis a lo largo del mes de lo mas vendido y lo que mas urgente es comprar
 
-class HomePageView(TemplateView):
-    template_name = "home.html"
 
 class OperacionesListView(ListView):
     model = Operacion

@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .models import Element
-from .views import HomePageView, ElementListView, ElementDeleteView, ElementDetailView, VentasListView, \
+from .views import  ElementListView, ElementDeleteView, ElementDetailView, VentasListView, \
     VentasDeleteView, VentasDetailView, ComprasListView, ComprasDeleteView, ComprasDetailView, create_elemet, \
     create_compras, create_venta, edit_elemento,OperacionesListView
 
