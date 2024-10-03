@@ -1,8 +1,10 @@
+
 from django.shortcuts import render, redirect, get_object_or_404
+from django.template.context_processors import request
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DeleteView, DetailView
 from django.dispatch import receiver
-from inventario.models import Compra, Element, Venta, Operacion
+from inventario.models import Compra, Element, Venta, Operacion, Vale_venta, Vale_compra
 from django.db.models.signals import post_save
 
 
@@ -17,6 +19,38 @@ from django.db.models.signals import post_save
 class OperacionesListView(ListView):
     model = Operacion
     template_name = 'home.html'
+
+class ValeVentaListView(ListView):
+    models = Vale_venta
+    template_name = r'vales/listado_vales_ventas.html'
+
+def create_vale_venta(request):
+
+    if request.method == 'POST':
+
+        vale_venta = Vale_venta()
+        vale_venta.save()
+
+        return redirect('registros_ventas_list')
+
+    return render(request, r'vales/listado_vales_ventas.html', {})
+
+
+class ValeCompraListView(ListView):
+    models = Vale_compra
+    template_name = r'vales/listado_vales_compras.html'
+
+def create_vale_compra(request):
+
+    if request.method == 'POST':
+
+        vale_compra = Vale_compra()
+        vale_compra.save()
+
+        return redirect('registros_compras_list')
+
+    return render(request, r'vales/listado_vales_compras.html', {})
+
 
 def create_venta(request):
 

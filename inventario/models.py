@@ -21,7 +21,7 @@ class Element(models.Model):
 class Vale_compra(models.Model):
 
     cantidad_elementos = models.IntegerField(null=False, blank=False)
-    inversion_total = models.IntegerField(null=False, blank=False)
+    inversion_total = models.IntegerField(null=False, blank=False, default=0)
     fecha_compra = models.DateField(default=date.today, blank=False, null=False)
 
     class Meta:
@@ -42,14 +42,17 @@ class Compra(models.Model):
 
 class Vale_venta(models.Model):
 
-    cantidad_elementos = models.IntegerField(null=False, blank=False)
+    cantidad_elementos = models.IntegerField(null=False, blank=False, default=0)
     monto_vendido = models.IntegerField(null=False, blank=False, default=0)
-    ganancia_total = models.IntegerField(null=False, blank=False)
+    ganancia_total = models.IntegerField(null=False, blank=False, default=0)
     fecha_venta = models.DateField(default=date.today, blank=False, null=False)
 
+    class Meta:
+        db_table = 'lista_ventas'
 
 class Venta(models.Model):
 
+    vale_venta = models.ForeignKey(Vale_venta, on_delete=models.CASCADE, db_tablespace='lista_ventas')
     fecha_venta = models.DateField(default=date.today, blank=False, null=False)
     cantidad = models.PositiveIntegerField(null=False, blank=False, default=0)
     ganancia = models.IntegerField(null=False, blank=False, default=0)
