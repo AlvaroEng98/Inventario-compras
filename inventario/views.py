@@ -1,7 +1,7 @@
 
+from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect, get_object_or_404
-from django.template.context_processors import request
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import TemplateView, ListView, DeleteView, DetailView
 from django.dispatch import receiver
 from inventario.models import Compra, Element, Venta, Operacion, Vale_venta, Vale_compra
@@ -21,35 +21,27 @@ class OperacionesListView(ListView):
     template_name = 'home.html'
 
 class ValeVentaListView(ListView):
-    models = Vale_venta
+    model = Vale_venta
     template_name = r'vales/listado_vales_ventas.html'
 
 def create_vale_venta(request):
+        
+    vale_venta = Vale_venta()
+    vale_venta.save()
 
-    if request.method == 'POST':
-
-        vale_venta = Vale_venta()
-        vale_venta.save()
-
-        return redirect('registros_ventas_list')
-
-    return render(request, r'vales/listado_vales_ventas.html', {})
-
+    return redirect(reverse('vales_venta_list'))
+    
 
 class ValeCompraListView(ListView):
-    models = Vale_compra
+    model = Vale_compra
     template_name = r'vales/listado_vales_compras.html'
 
 def create_vale_compra(request):
 
-    if request.method == 'POST':
+    vale_compra = Vale_compra()
+    vale_compra.save()
 
-        vale_compra = Vale_compra()
-        vale_compra.save()
-
-        return redirect('registros_compras_list')
-
-    return render(request, r'vales/listado_vales_compras.html', {})
+    return redirect(reverse('vales_compra_list'))
 
 
 def create_venta(request):
@@ -75,6 +67,7 @@ def create_venta(request):
 class VentasListView(ListView):
     model = Venta
     template_name = r"ventas/ventas_list.html"
+
 
 class VentasDetailView(DetailView):
     model = Venta
@@ -111,6 +104,7 @@ def create_compras(request):
 class ComprasListView(ListView):
     model = Compra
     template_name = r"compras/compras_list.html"
+
 
 class ComprasDeleteView(DeleteView):
     model = Compra
@@ -181,21 +175,21 @@ def edit_elemento(request, pk ):
 
 #signal para que cuando se cree una compra o una venta 
 #funcion para cuando se cree una venta
-@receiver(post_save, sender=Compra)
+@receiver(post_save, sender=Vale_compra)
 def mi_retroalimentacion(sender, instance, created, **kwargs):
     if created:
 
         operacion = Operacion()
         operacion.operacion = 'Compra'
-        operacion.cantidad = instance.inversion
+        operacion.cantidad = instance.inversion_total
         operacion.save()
 
 #funcion para cuando se cree una compra
-@receiver(post_save, sender=Venta)
+@receiver(post_save, sender=Vale_venta)
 def mi_retroalimentacion(sender, instance, created, **kwargs):
     if created:
 
         operacion = Operacion()
         operacion.operacion = 'Venta'
-        operacion.cantidad = instance.ganancia
+        operacion.cantidad = instance.ganancia_total
         operacion.save()

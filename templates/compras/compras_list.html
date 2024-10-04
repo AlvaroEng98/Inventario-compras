@@ -14,19 +14,20 @@
             </a>
             <ul class="nav nav-treeview">
           <li class="nav-item ">
-            <a href="{% url 'create_compras' %}" class="nav-link">
+            <a href="{% url 'vales_compra_create' %}" class="nav-link">
               <i class="nav-icon fas fa-plus"></i>
               <p class="text">Insertar Compra</p>
             </a>
           </li>
             </ul>
             </li>
-          <li class="nav-item">
-            <a href="{% url 'ventas_list' %}" class="nav-link">
-              <i class="nav-icon fas fa-edit"></i>
-              <p class="text">Ventas</p>
-            </a>
-          </li>
+  
+            <li class="nav-item">
+              <a href="{% url 'vales_venta_list' %}" class="nav-link">
+                <i class="nav-icon fas fa-edit"></i>
+                <p class="text">Ventas</p>
+              </a>
+            </li>
 
           <li class="nav-item">
             <a href="{% url 'elementos_list' %}" class="nav-link">
@@ -94,7 +95,7 @@
 
 
               <td class="project-actions text-right">
-                          <a class="btn btn-primary btn-sm" href="#">
+                          <a class="btn btn-primary btn-sm" href="{% url 'compras_list' %}">
                               <i class="fas fa-folder">
                               </i>
                               Detalles
