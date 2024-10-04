@@ -20,6 +20,17 @@ class OperacionesListView(ListView):
     model = Operacion
     template_name = 'home.html'
 
+class OperacionesDeleteView(DeleteView):
+    model = Operacion
+    template_name = r"operaciones/operaciones_delete.html"
+    success_url = reverse_lazy("home")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Eliminar Venta'
+        context['message'] = '¿Estás seguro de que deseas eliminar este registro?'
+        return context
+
 class ValeVentaListView(ListView):
     model = Vale_venta
     template_name = r'vales/listado_vales_ventas.html'
@@ -47,7 +58,6 @@ def create_vale_compra(request):
 def create_venta(request):
 
     elemetos = Element.objects.all()
-    ganancia = 0
     if request.method == 'POST':
 
         cantidad = request.POST['cantidad']
@@ -58,11 +68,31 @@ def create_venta(request):
         venta.cantidad = cantidad
         venta.elemento = elemento    
   
-        venta.ganancia += (elemento.precio_venta - elemento.precio_compra)*int(cantidad)
+        venta.ganancia = (elemento.precio_venta - elemento.precio_compra)*int(cantidad)
         venta.save()
 
         return redirect('ventas_list')
     return render(request,r'ventas/ventas_create.html', {'elemetos': elemetos})
+
+def edit_venta(request, pk):
+    
+    elemetos = Element.objects.all()
+    venta = get_object_or_404(Venta, pk = pk)
+
+    if request.method == 'POST':
+
+        cantidad = request.POST['cantidad']
+        elemento_nombre = request.POST['elemento']
+        elemento = Element.objects.get(nombre=elemento_nombre)
+
+        venta.cantidad = cantidad
+        venta.elemento = elemento
+        venta.ganancia = (elemento.precio_venta - elemento.precio_compra)*int(cantidad)
+        venta.save()
+        
+        return redirect('ventas_list')
+    return render(request,r'ventas/ventas_edit.html', {'elemetos': elemetos})
+
 
 class VentasListView(ListView):
     model = Venta
@@ -101,9 +131,33 @@ def create_compras(request):
         return redirect('compras_list')
     return render(request, r'compras/compras_create.html', {'elemetos': elemetos})
 
+def edit_compra(request, pk):
+
+    elemetos = Element.objects.all()
+    compra = get_object_or_404(Compra, pk = pk)
+
+    if request.method == 'POST':
+        cantidad = request.POST['cantidad']
+        elemento_nombre = request.POST['elemento']
+        elemento = Element.objects.get(nombre=elemento_nombre)
+
+        compra.cantidad = cantidad
+        compra.elemento = elemento
+        compra.inversion = elemento.precio_compra
+    
+        compra.save()
+        return redirect('compras_list')
+    return render(request, r'compras/compras_edit.html', {'elemetos': elemetos})
+
+
+
 class ComprasListView(ListView):
     model = Compra
     template_name = r"compras/compras_list.html"
+
+    def get_queryset(self):
+        pk = self.kwargs['pk']
+        return Compra.objects.filter(vale_compra_id=pk)
 
 
 class ComprasDeleteView(DeleteView):

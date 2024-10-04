@@ -5,19 +5,17 @@
 
           {% block element_nav %}
 
-
-
           <li class="nav-item">
             <a href="{% url 'vales_compra_list' %}" class="nav-link">
               <i class="nav-icon fas fa-edit"></i>
-              <p class="text">Compras</p>
+              <p class="text">Vales Compras</p>
             </a>
           </li>
 
           <li class="nav-item">
             <a href="{% url 'vales_venta_list' %}" class="nav-link">
               <i class="nav-icon fas fa-edit"></i>
-              <p class="text">Ventas</p>
+              <p class="text">Vales Ventas</p>
             </a>
           </li>
 
@@ -87,12 +85,7 @@
                           </i>
                           Detalles
                       </a>
-                      <a class="btn btn-info btn-sm" href="#">
-                          <i class="fas fa-pencil-alt">
-                          </i>
-                          Editar
-                      </a>
-                      <a class="btn btn-danger btn-sm" href="#">
+                      <a class="btn btn-danger btn-sm" href="{% url 'delete_operacion' object.pk %}">
                           <i class="fas fa-trash">
                           </i>
                           Eliminar

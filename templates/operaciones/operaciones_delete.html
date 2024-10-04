@@ -1,0 +1,26 @@
+{% extends "base/base_create_template.html" %}
+{% load static %}
+
+{% block element_nav %}
+
+{% endblock element_nav %}
+
+{% block hubicacion %}
+
+    Eliminar Elemento
+
+{% endblock hubicacion%}
+
+{% block formulario %}
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="card-body">
+            <p>¿Estás seguro de que deseas eliminar este elemento?</p>
+        </div>
+        <div class="card-footer">
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+            <button type="button" class="btn btn-default" onclick="location.href='{% url 'home' %}'">Cancelar</button>
+        </div>
+    </form>
+{% endblock formulario %}

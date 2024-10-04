@@ -8,7 +8,7 @@
             <a href="#" class="nav-link active">
               <i class="nav-icon fas fa-copy"></i>
               <p>
-                Compras
+                Vales Compras
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
@@ -21,12 +21,12 @@
           </li>
             </ul>
             </li>
-          <li class="nav-item">
-            <a href="{% url 'vales_venta_list' %}" class="nav-link">
-              <i class="nav-icon fas fa-edit"></i>
-              <p class="text">Ventas</p>
-            </a>
-          </li>
+            <li class="nav-item">
+              <a href="{% url 'vales_venta_list' %}" class="nav-link">
+                <i class="nav-icon fas fa-edit"></i>
+                <p class="text">Vales Ventas</p>
+              </a>
+            </li>
 
           <li class="nav-item">
             <a href="{% url 'elementos_list' %}" class="nav-link">
@@ -92,7 +92,7 @@
                 </td>
 
               <td class="project-actions text-right">
-                          <a class="btn btn-primary btn-sm" href="#">
+                          <a class="btn btn-primary btn-sm" href="{% url 'compras_list' object.pk %}">
                               <i class="fas fa-folder">
                               </i>
                               Detalles
