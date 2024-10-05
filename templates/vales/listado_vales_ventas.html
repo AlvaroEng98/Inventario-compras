@@ -73,7 +73,7 @@
 
 
           {% block valores_tabla %}
-              {% for object in object_list %}
+              {% for vale_venta in object_list %}
               <tr>
 
               <td>
@@ -83,22 +83,22 @@
               <td>
                   <a>
 
-                    {{ object.fecha_venta | date:"d-m-Y" }}   
+                    {{ vale_venta.fecha_venta | date:"d-m-Y" }}   
                   </a>
               </td>
 
               <td >
-                    {{ object.cantidad_elementos }}
+                    {{ vale_venta.cantidad_elementos }}
               </td>
               <td >
-                {{ object.monto_vendido }}
+                {{ vale_venta.monto_vendido }}
                 </td>
                 <td >
-                    {{ object.ganancia_total }}
+                    {{ vale_venta.ganancia_total }}
                 </td>
 
               <td class="project-actions text-right">
-                          <a class="btn btn-primary btn-sm" href="#">
+                          <a class="btn btn-primary btn-sm" href="{% url 'ventas_list' vale_venta_id=vale_venta.id %}">
                               <i class="fas fa-folder">
                               </i>
                               Detalles
@@ -108,7 +108,7 @@
                               </i>
                               Editar
                           </a>
-                          <a class="btn btn-danger btn-sm" href="{% url 'compras_delete' object.pk %}">
+                          <a class="btn btn-danger btn-sm" href="{% url 'ventas_list' vale_venta_id=vale_venta.id %}">
                               <i class="fas fa-trash">
                               </i>
                               Eliminar

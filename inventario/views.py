@@ -7,14 +7,7 @@ from django.dispatch import receiver
 from inventario.models import Compra, Element, Venta, Operacion, Vale_venta, Vale_compra
 from django.db.models.signals import post_save
 
-
-# Create your views here.
-
-#metodos relacionados con la creacion, edicion, eliminacion -- no hace falta, listar y visualizar una comprar/venta
-#metodos relacionados con el listado del inventario y las operaciones
-
-#posivilidad de analizis a lo largo del mes de lo mas vendido y lo que mas urgente es comprar
-
+#metodos relacionados con las operaciones compras/ventas
 
 class OperacionesListView(ListView):
     model = Operacion
@@ -30,10 +23,15 @@ class OperacionesDeleteView(DeleteView):
         context['title'] = 'Eliminar Venta'
         context['message'] = '¿Estás seguro de que deseas eliminar este registro?'
         return context
+    
+#metodos relacionados con las operaciones compras/ventas
 
+#metodos relacionados con las ventas
+#vales ventas
 class ValeVentaListView(ListView):
     model = Vale_venta
     template_name = r'vales/listado_vales_ventas.html'
+
 
 def create_vale_venta(request):
         
@@ -41,7 +39,83 @@ def create_vale_venta(request):
     vale_venta.save()
 
     return redirect(reverse('vales_venta_list'))
+#vales de ventas    
+
+#ventas de productos
+class VentasListView(ListView):
+    model = Venta
+    template_name = r"ventas/ventas_list.html"
+
+    def get_queryset(self):
+        vale_venta_id = self.kwargs['vale_venta_id']
+        return Venta.objects.filter(vale_venta_id=vale_venta_id)
     
+ #metodo a la antigua   
+def listar_ventas_vale(request,vale_venta_id ):
+
+    vale_venta = get_object_or_404(Vale_venta, id = vale_venta_id)
+    ventas = Venta.objects.filter(vale_venta= vale_venta)
+
+    return render(request, r"ventas/ventas_list.html", {"id":vale_venta_id, 'ventas':ventas})
+
+def create_venta(request, vale_venta_id):
+
+    vale_venta = get_object_or_404(Vale_venta, pk=vale_venta_id)
+    elemetos = Element.objects.all()
+    if request.method == 'POST':
+
+        cantidad = request.POST['cantidad']
+        elemento_nombre = request.POST['elemento']
+        elemento = Element.objects.get(nombre=elemento_nombre)
+
+        venta = Venta()
+        venta.cantidad = cantidad
+        venta.elemento = elemento    
+  
+        venta.ganancia = (elemento.precio_venta - elemento.precio_compra)*int(cantidad)
+        venta.save()
+
+        return redirect('ventas_list', vale_venta_id )
+    return render(request,r'ventas/ventas_create.html', {'vale_venta':vale_venta, 'elemetos': elemetos})
+
+def edit_venta(request, pk):
+    
+    elemetos = Element.objects.all()
+    venta = get_object_or_404(Venta, pk = pk)
+
+    if request.method == 'POST':
+
+        cantidad = request.POST['cantidad']
+        elemento_nombre = request.POST['elemento']
+        elemento = Element.objects.get(nombre=elemento_nombre)
+
+        venta.cantidad = cantidad
+        venta.elemento = elemento
+        venta.ganancia = (elemento.precio_venta - elemento.precio_compra)*int(cantidad)
+        venta.save()
+        
+        return redirect('ventas_list')
+    return render(request,r'ventas/ventas_edit.html', {'elemetos': elemetos})
+
+
+
+class VentasDetailView(DetailView):
+    model = Venta
+    template_name = r"ventas/ventas_details.html"
+
+class VentasDeleteView(DeleteView):
+    model = Venta
+    template_name = r"ventas/ventas_delete.html"
+    success_url = reverse_lazy("ventas_list")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Eliminar Venta'
+        context['message'] = '¿Estás seguro de que deseas eliminar esta venta?'
+        return context
+
+#metodos relacionados con las ventas
+
 
 class ValeCompraListView(ListView):
     model = Vale_compra
@@ -93,11 +167,9 @@ def edit_venta(request, pk):
         return redirect('ventas_list')
     return render(request,r'ventas/ventas_edit.html', {'elemetos': elemetos})
 
-
 class VentasListView(ListView):
     model = Venta
     template_name = r"ventas/ventas_list.html"
-
 
 class VentasDetailView(DetailView):
     model = Venta
@@ -153,11 +225,11 @@ def edit_compra(request, pk):
 
 class ComprasListView(ListView):
     model = Compra
-    template_name = r"compras/compras_list.html"
+    template_name = 'compras_list.html'
 
     def get_queryset(self):
-        pk = self.kwargs['pk']
-        return Compra.objects.filter(vale_compra_id=pk)
+        vale_compra_id = self.kwargs['vale_compra_id']
+        return Compra.objects.filter(vale_compra_id=vale_compra_id)
 
 
 class ComprasDeleteView(DeleteView):

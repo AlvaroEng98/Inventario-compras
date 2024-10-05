@@ -5,8 +5,8 @@
 
           {% block element_nav %}
             <li class="nav-item">
-            <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-copy"></i>
+              <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-copy"></i>
               <p>
                 Ventas
                 <i class="right fas fa-angle-left"></i>
@@ -14,7 +14,7 @@
             </a>
             <ul class="nav nav-treeview">
             <li class="nav-item ">
-             <a href="{% url 'create_venta' %}" class="nav-link">
+             <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-plus"></i>
                 <p class="text">Insertar Venta</p>
               </a>
@@ -74,7 +74,7 @@
 
 
           {% block valores_tabla %}
-          {% for object in object_list %}
+          {% for venta in ventas %}
           <tr>
 
           <td>
@@ -83,20 +83,20 @@
 
           <td>
                <a>
-                {{ object.fecha_venta | date:"d-m-Y" }}                   </a>
+                {{ venta.fecha_venta | date:"d-m-Y" }}                   </a>
           </td>
 
           <td>
               <a>
 
-                {{ object.elemento }}                   </a>
+                {{ venta.elemento }}                   </a>
           </td>
 
           <td >
-                {{ object.cantidad }}
+                {{ venta.cantidad }}
           </td>
           <td >
-            {{ object.ganancia }}
+            {{ venta.ganancia }}
           </td>
 
 
@@ -111,7 +111,7 @@
                           </i>
                           Editar
                       </a>
-                      <a class="btn btn-danger btn-sm" href="{% url 'ventas_delete' object.pk %}">
+                      <a class="btn btn-danger btn-sm" href="">
                           <i class="fas fa-trash">
                           </i>
                           Eliminar
