@@ -14,7 +14,7 @@
             </a>
             <ul class="nav nav-treeview">
           <li class="nav-item ">
-            <a href="{% url 'create_compras' %}" class="nav-link">
+            <a href="{% url 'create_compras' id_vale_compra %}" class="nav-link">
               <i class="nav-icon fas fa-plus"></i>
               <p class="text">Insertar Compra</p>
             </a>
@@ -71,7 +71,7 @@
 
 
           {% block valores_tabla %}
-              {% for object in object_list %}
+              {% for compra in compras %}
               <tr>
 
               <td>
@@ -80,22 +80,22 @@
 
               <td>
                    <a>
-                       {{object.elemento}}                   </a>
+                       {{compra.elemento}}                   </a>
               </td>
 
               <td>
                   <a>
 
-                    {{ object.fecha_compra | date:"d-m-Y" }}                   </a>
+                    {{ compra.fecha_compra | date:"d-m-Y" }}                   </a>
               </td>
 
               <td >
-                    {{ object.cantidad }}
+                    {{ compra.cantidad }}
               </td>
 
 
               <td class="project-actions text-right">
-                          <a class="btn btn-primary btn-sm" href="{% url 'compras_list' %}">
+                          <a class="btn btn-primary btn-sm" href="#">
                               <i class="fas fa-folder">
                               </i>
                               Detalles
@@ -105,7 +105,7 @@
                               </i>
                               Editar
                           </a>
-                          <a class="btn btn-danger btn-sm" href="{% url 'compras_delete' object.pk %}">
+                          <a class="btn btn-danger btn-sm" href="{% url 'compras_delete' compra.pk">
                               <i class="fas fa-trash">
                               </i>
                               Eliminar

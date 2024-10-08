@@ -8,7 +8,7 @@
             <a href="#" class="nav-link active">
               <i class="nav-icon fas fa-copy"></i>
               <p>
-                Ventas
+                Vales Ventas
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
@@ -16,7 +16,7 @@
           <li class="nav-item ">
             <a href="{% url 'vales_venta_create' %}" class="nav-link">
               <i class="nav-icon fas fa-plus"></i>
-              <p class="text">Insertar Venta</p>
+              <p class="text">Insertar Vale Venta</p>
             </a>
           </li>
             </ul>
@@ -24,7 +24,7 @@
           <li class="nav-item">
             <a href="{% url 'vales_compra_list' %}" class="nav-link">
               <i class="nav-icon fas fa-edit"></i>
-              <p class="text">Compras</p>
+              <p class="text">Vales Compras</p>
             </a>
           </li>
 
@@ -108,7 +108,7 @@
                               </i>
                               Editar
                           </a>
-                          <a class="btn btn-danger btn-sm" href="{% url 'ventas_list' vale_venta_id=vale_venta.id %}">
+                          <a class="btn btn-danger btn-sm" href="{% url 'vale_venta_delete' vale_venta.pk %}">
                               <i class="fas fa-trash">
                               </i>
                               Eliminar

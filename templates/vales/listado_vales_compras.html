@@ -1,4 +1,3 @@
-
 {% extends "base/base_template.html" %}
 {% load static %}
 
@@ -16,7 +15,7 @@
           <li class="nav-item ">
             <a href="{% url 'vales_compra_create' %}" class="nav-link">
               <i class="nav-icon fas fa-plus"></i>
-              <p class="text">Insertar Compra</p>
+              <p class="text">Insertar Vale Compra</p>
             </a>
           </li>
             </ul>
@@ -70,7 +69,7 @@
 
 
           {% block valores_tabla %}
-              {% for object in object_list %}
+              {% for vale_compra in object_list %}
               <tr>
 
               <td>
@@ -80,19 +79,19 @@
               <td>
                   <a>
 
-                    {{ object.fecha_compra | date:"d-m-Y" }}   
+                    {{ vale_compra.fecha_compra | date:"d-m-Y" }}   
                   </a>
               </td>
 
               <td >
-                    {{ object.cantidad_elementos }}
+                    {{ vale_compra.cantidad_elementos }}
               </td>
               <td >
-                {{ object.inversion_total }}
+                {{ vale_compra.inversion_total }}
                 </td>
 
               <td class="project-actions text-right">
-                          <a class="btn btn-primary btn-sm" href="{% url 'compras_list' object.pk %}">
+                          <a class="btn btn-primary btn-sm" href="{% url 'compras_list' vale_compra_id=vale_compra.id %}">
                               <i class="fas fa-folder">
                               </i>
                               Detalles
@@ -102,7 +101,7 @@
                               </i>
                               Editar
                           </a>
-                          <a class="btn btn-danger btn-sm" href="{% url 'compras_delete' object.pk %}">
+                          <a class="btn btn-danger btn-sm" href="{% url 'vale_compra_delete' vale_compra.pk %}">
                               <i class="fas fa-trash">
                               </i>
                               Eliminar
